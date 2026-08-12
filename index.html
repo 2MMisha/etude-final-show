@@ -13,6 +13,151 @@
         <link rel="stylesheet" type="text/css" href="assets/css/main.css">
         <link rel="stylesheet" type="text/css" media="screen" title="Custom Settings" href="assets/css/custom.css" >
         <script src="assets/js/libs/modernizr.custom.23122.js"></script>
+        <style id="mmg-added-styles">
+        /* ===== 2M Media: first-visit tutorial + download button (added) ===== */
+        .mmg-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.78);
+            z-index: 2147483000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease;
+        }
+        .mmg-overlay.is-visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .mmg-card {
+            background: #ffffff;
+            color: #1a1a1a;
+            max-width: 380px;
+            width: 100%;
+            border-radius: 12px;
+            padding: 30px 26px 24px;
+            box-sizing: border-box;
+            text-align: center;
+            box-shadow: 0 12px 44px rgba(0,0,0,0.4);
+            transform: translateY(10px);
+            transition: transform 0.25s ease;
+        }
+        .mmg-overlay.is-visible .mmg-card {
+            transform: translateY(0);
+        }
+        .mmg-card-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: #111111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+        }
+        .mmg-card-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: #ffffff;
+        }
+        .mmg-card h2 {
+            font-size: 18px;
+            margin: 0 0 10px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+        .mmg-card p {
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0 0 22px;
+            color: #444444;
+        }
+        .mmg-card button {
+            background: #111111;
+            color: #ffffff;
+            border: none;
+            padding: 11px 30px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            transition: opacity 0.15s ease;
+        }
+        .mmg-card button:hover {
+            opacity: 0.85;
+        }
+        .mmg-card button:focus-visible {
+            outline: 2px solid #111111;
+            outline-offset: 3px;
+        }
+        .mmg-dl-btn {
+            position: fixed;
+            top: 16px;
+            right: 72px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(17,17,17,0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 999999;
+            transition: background 0.15s ease, transform 0.1s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .mmg-dl-btn:hover {
+            background: rgba(17,17,17,0.85);
+        }
+        .mmg-dl-btn:active {
+            transform: scale(0.93);
+        }
+        .mmg-dl-btn.is-visible {
+            display: flex;
+        }
+        .mmg-dl-btn:focus-visible {
+            outline: 2px solid #ffffff;
+            outline-offset: 3px;
+        }
+        .mmg-dl-btn svg {
+            width: 19px;
+            height: 19px;
+            fill: #ffffff;
+        }
+        .mmg-dl-btn.is-loading svg {
+            animation: mmg-spin 0.9s linear infinite;
+        }
+        @keyframes mmg-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @media (max-width: 640px) {
+            .mmg-dl-btn {
+                top: auto;
+                bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+                right: calc(18px + env(safe-area-inset-right, 0px));
+                width: 42px;
+                height: 42px;
+            }
+            .mmg-card {
+                padding: 26px 20px 20px;
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .mmg-overlay, .mmg-card, .mmg-dl-btn {
+                transition: none !important;
+            }
+            .mmg-dl-btn.is-loading svg {
+                animation: none !important;
+            }
+        }
+        </style>
     </head>
     <body class="has-header row-spacing-md" data-pagination-style="scroll" data-target-row-height="200">
                         <header class="is-fixed">
@@ -481,5 +626,252 @@
         <script>window.jQuery || document.write('<script src="assets/js/libs/jquery-1.10.2.min.js"><\/script>')</script>
         <script src="assets/js/libs/jquery.velocity.min.js"></script>
         <script src="assets/js/main.js"></script>
+
+        <!-- 2M Media: first-visit tutorial overlay (added) -->
+        <div id="mmgTutorialOverlay" class="mmg-overlay" role="dialog" aria-modal="true" aria-labelledby="mmgTutorialTitle" aria-describedby="mmgTutorialBody">
+            <div class="mmg-card">
+                <div class="mmg-card-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 3a1 1 0 011 1v9.59l3.3-3.3a1 1 0 111.4 1.42l-5 5a1 1 0 01-1.4 0l-5-5a1 1 0 111.4-1.42l3.3 3.3V4a1 1 0 011-1z"/><path d="M5 19a1 1 0 011-1h12a1 1 0 110 2H6a1 1 0 01-1-1z"/></svg>
+                </div>
+                <h2 id="mmgTutorialTitle"></h2>
+                <p id="mmgTutorialBody"></p>
+                <button id="mmgTutorialDismiss" type="button"></button>
+            </div>
+        </div>
+
+        <!-- 2M Media: download button, shown while a photo is open full-size (added) -->
+        <div id="mmgDownloadBtn" class="mmg-dl-btn" role="button" tabindex="0">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 3a1 1 0 011 1v9.59l3.3-3.3a1 1 0 111.4 1.42l-5 5a1 1 0 01-1.4 0l-5-5a1 1 0 111.4-1.42l3.3 3.3V4a1 1 0 011-1z"/><path d="M5 19a1 1 0 011-1h12a1 1 0 110 2H6a1 1 0 01-1-1z"/></svg>
+        </div>
+
+        <script>
+        (function () {
+            'use strict';
+
+            /* ---------- language detection: he / ru / en ---------- */
+            function detectLang() {
+                var raw = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || navigator.userLanguage || 'en'];
+                for (var i = 0; i < raw.length; i++) {
+                    var code = String(raw[i]).toLowerCase();
+                    if (code.indexOf('he') === 0 || code.indexOf('iw') === 0) return 'he';
+                    if (code.indexOf('ru') === 0) return 'ru';
+                }
+                return 'en';
+            }
+
+            var LANG = detectLang();
+            var DIR = (LANG === 'he') ? 'rtl' : 'ltr';
+
+            var STRINGS = {
+                en: {
+                    title: 'Quick tip',
+                    body: 'Tap any photo to view it full size. To save it, tap the download icon that appears — or press and hold the photo (right-click on a computer) and choose “Save Image”.',
+                    cta: 'Got it',
+                    downloadLabel: 'Download'
+                },
+                ru: {
+                    title: 'Подсказка',
+                    body: 'Нажмите на любое фото, чтобы открыть его крупнее. Чтобы сохранить фото, нажмите на появившийся значок скачивания — либо нажмите и удерживайте фото (на компьютере — правая кнопка мыши) и выберите «Сохранить изображение».',
+                    cta: 'Понятно',
+                    downloadLabel: 'Скачать'
+                },
+                he: {
+                    title: 'טיפ מהיר',
+                    body: 'הקישו על כל תמונה כדי לצפות בה בגודל מלא. כדי לשמור אותה, הקישו על סמל ההורדה שיופיע — או בצעו לחיצה ארוכה על התמונה (במחשב: קליק ימני) ובחרו באפשרות שמירת תמונה.',
+                    cta: 'הבנתי',
+                    downloadLabel: 'הורדה'
+                }
+            };
+
+            var T = STRINGS[LANG];
+
+            /* ---------- first-visit tutorial ---------- */
+            var STORAGE_KEY = 'mmgTutorialSeen_v1';
+            var lastFocused = null;
+
+            function showTutorial() {
+                var overlay = document.getElementById('mmgTutorialOverlay');
+                if (!overlay) return;
+                var card = overlay.querySelector('.mmg-card');
+                card.setAttribute('dir', DIR);
+                document.getElementById('mmgTutorialTitle').textContent = T.title;
+                document.getElementById('mmgTutorialBody').textContent = T.body;
+                var btn = document.getElementById('mmgTutorialDismiss');
+                btn.textContent = T.cta;
+                lastFocused = document.activeElement;
+                overlay.classList.add('is-visible');
+                btn.focus();
+            }
+
+            function hideTutorial() {
+                var overlay = document.getElementById('mmgTutorialOverlay');
+                if (!overlay) return;
+                overlay.classList.remove('is-visible');
+                try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
+                if (lastFocused && lastFocused.focus) lastFocused.focus();
+            }
+
+            function initTutorial() {
+                var seen = false;
+                try { seen = localStorage.getItem(STORAGE_KEY) === '1'; } catch (e) {}
+
+                var dismissBtn = document.getElementById('mmgTutorialDismiss');
+                if (dismissBtn) dismissBtn.addEventListener('click', hideTutorial);
+
+                var overlay = document.getElementById('mmgTutorialOverlay');
+                if (overlay) {
+                    overlay.addEventListener('click', function (e) {
+                        if (e.target === overlay) hideTutorial();
+                    });
+                }
+
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape' && overlay && overlay.classList.contains('is-visible')) {
+                        hideTutorial();
+                    }
+                });
+
+                if (!seen) {
+                    setTimeout(showTutorial, 500);
+                }
+            }
+
+            /* ---------- download button, shown in the full-size (loupe) view ---------- */
+            function findCurrentImageUrl() {
+                var container = document.querySelector('#loupeContainer .image-container');
+                if (!container) return null;
+                var img = container.querySelector('img');
+                if (img && (img.currentSrc || img.src)) return img.currentSrc || img.src;
+                var all = container.querySelectorAll('*');
+                for (var i = 0; i < all.length; i++) {
+                    var bg = window.getComputedStyle(all[i]).backgroundImage;
+                    if (bg && bg !== 'none') {
+                        var match = bg.match(/url\(["']?(.*?)["']?\)/);
+                        if (match && match[1]) return match[1];
+                    }
+                }
+                return null;
+            }
+
+            function findExportFilename(url) {
+                if (!window.LR || !Array.isArray(window.LR.images)) return null;
+                var idMatch = url.match(/(\d{5,7})/);
+                if (!idMatch) return null;
+                var id = idMatch[1];
+                for (var i = 0; i < window.LR.images.length; i++) {
+                    if (window.LR.images[i].id === id) return window.LR.images[i].exportFilename;
+                }
+                return null;
+            }
+
+            function filenameFromUrl(url) {
+                var exportName = findExportFilename(url);
+                if (exportName) {
+                    return /\.[a-z0-9]{2,5}$/i.test(exportName) ? exportName : (exportName + '.jpg');
+                }
+                try {
+                    var clean = url.split('?')[0].split('#')[0];
+                    var parts = clean.split('/');
+                    var name = parts[parts.length - 1] || 'photo.jpg';
+                    if (!/\.[a-z0-9]{2,5}$/i.test(name)) name += '.jpg';
+                    return name;
+                } catch (e) {
+                    return 'photo.jpg';
+                }
+            }
+
+            function triggerDownload(url, filename) {
+                var btn = document.getElementById('mmgDownloadBtn');
+                if (btn) btn.classList.add('is-loading');
+                fetch(url, { mode: 'cors' })
+                    .then(function (res) {
+                        if (!res.ok) throw new Error('bad response');
+                        return res.blob();
+                    })
+                    .then(function (blob) {
+                        var blobUrl = URL.createObjectURL(blob);
+                        var a = document.createElement('a');
+                        a.href = blobUrl;
+                        a.download = filename;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        setTimeout(function () { URL.revokeObjectURL(blobUrl); }, 4000);
+                    })
+                    .catch(function () {
+                        /* Cross-origin or network block: open the photo in a new tab so the
+                           person can still save it with press-and-hold / right-click, per the tutorial. */
+                        window.open(url, '_blank');
+                    })
+                    .finally(function () {
+                        if (btn) btn.classList.remove('is-loading');
+                    });
+            }
+
+            function initDownloadButton() {
+                var btn = document.getElementById('mmgDownloadBtn');
+                var loupe = document.getElementById('loupeContainer');
+                var imageContainer = loupe ? loupe.querySelector('.image-container') : null;
+                if (!btn || !loupe || !imageContainer) return;
+
+                btn.setAttribute('title', T.downloadLabel);
+                btn.setAttribute('aria-label', T.downloadLabel);
+
+                function handleActivate(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var url = findCurrentImageUrl();
+                    if (!url) return;
+                    triggerDownload(url, filenameFromUrl(url));
+                }
+
+                btn.addEventListener('click', handleActivate);
+                btn.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') handleActivate(e);
+                });
+
+                function isLoupeVisible() {
+                    var cs = window.getComputedStyle(loupe);
+                    if (cs.display === 'none') return false;
+                    if (cs.visibility === 'hidden') return false;
+                    if (parseFloat(cs.opacity) === 0) return false;
+                    return true;
+                }
+
+                function refreshVisibility() {
+                    var hasImage = !!findCurrentImageUrl();
+                    btn.classList.toggle('is-visible', hasImage && isLoupeVisible());
+                }
+
+                var imgObserver = new MutationObserver(refreshVisibility);
+                imgObserver.observe(imageContainer, { childList: true, subtree: true, attributes: true });
+
+                var loupeObserver = new MutationObserver(refreshVisibility);
+                loupeObserver.observe(loupe, { attributes: true, attributeFilter: ['class', 'style'] });
+
+                var bodyObserver = new MutationObserver(refreshVisibility);
+                bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+                /* Catch-all: main.js's exact open/close mechanism isn't known here,
+                   so re-check shortly after any click or key press too. */
+                document.addEventListener('click', function () { setTimeout(refreshVisibility, 350); }, true);
+                document.addEventListener('keyup', function () { setTimeout(refreshVisibility, 350); }, true);
+
+                refreshVisibility();
+            }
+
+            /* ---------- init ---------- */
+            function init() {
+                initTutorial();
+                initDownloadButton();
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+        })();
+        </script>
     </body>
 </html>
